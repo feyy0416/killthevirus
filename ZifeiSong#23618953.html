@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewpoint" content="width=device-width, initial-scale=1.0">
+	<meta http-equiv="X-Compatible" content="ie=edge">
+	<title>Kill The Virus</title>
+
+</audio>
+</head>
+<style>
+	#login{
+		border-radius:15px;
+		width:200px;
+		height:100px;
+		font-size:30px;
+		position: absolute;
+		left:50%;
+		top:50%;
+		margin-left:-75px;
+		margin-top:-100px;
+		border:none;
+		outline:none;
+	}
+	p{
+		margin-top:25px;
+		margin-left:100px;
+		margin-right:100px;
+	    text-indent: 50px;
+	    text-align: justify;
+	    letter-spacing: 3px;
+	    color:white
+	}
+	label{
+		font-weight:bold;
+		color:white;
+	}
+	
+	table{
+		cursor: url(img/tool.png),pointer;
+		margin: 25px auto;
+	}
+	td{
+		width:150px;
+		height:150px;
+		text-align:center;
+	}
+	
+	html,body{
+		height:100%;
+		border:1px solid black;
+		margin:0;
+		background: url(img/table.jpg) no-repeat center/cover;
+	}
+	
+	.a{
+		margin-top:15px;
+		text-align:center;
+	}
+	
+	img{
+		width:80px;
+		height:80px;
+	}
+	
+	cursor{
+		width:30px;
+		height:15px;
+	}
+	
+	.gamestart{
+		width: 100%;
+		height: 100%;
+		background-color: rgba(0,0,0,0.5);
+	}
+	.gamestart>input{
+		background-image:linear-gradient(to right top,green,blue);
+		color:white;
+		border-radius:15px;
+		width:200px;
+		height:100px;
+		font-size:30px;
+		position: absolute;
+		left:50%;
+		top:50%;
+		margin-left:-75px;
+		border:none;
+		outline:none;
+	}	
+	.gamestart>#easy{
+		margin-top:-150px;
+	}
+	.register{
+	  background-color: #4CAF50; 
+	  border: none;
+	  color: white;
+	  padding: 10px 20px;
+	  text-align: center;
+	  text-decoration: none;
+	  display: inline-block;
+	  font-size: 16px;
+	  margin: 4px 2px;
+	  cursor: pointer;
+	  border-radius:15px;
+	}
+
+</style>
+<body>
+	<p id="rule">Rules of the game: you are now in a world full of viruses. Fortunately, you have a bottle of disinfectant in your hand. You need to kill as many viruses as you can in a minute. The virus will appear randomly on the screen. When the virus appears, you need to left click the virus as soon as possible to kill it with disinfectant. It should be noted that the virus will disappear in a certain period of time after it appears. You will get one point for each virus killed. Similarly, because the disinfectant is very precious, when you right-click and do not kill the virus, you will lose one point.
+	There are two levels of difficulty in this game. In simple difficulty, the speed of virus generation and disappearance will be slow, while the difficulty will be very fast.
+	<span style="color: red;">!!!Please make sure you run this game with Google Chrome!!!</span></p>
+	
+	<div id = "login">
+		<label>Please Enter Your Name: </label><input type="text" value="" id="username">
+		<button class="register" onclick="myFunction()">Register</button>
+	</div>
+
+	<div class="gamestart">
+		<input type="button" value="Easy Mode" id="easy">
+		<input type="button" value="Hard Mode" id="hard">
+	</div>
+	<div class = "a">
+	<div id="data-box">
+		<label>Player: </label><input type="text" value="" id="player" readonly>
+		<label>Score: </label><input type="text" value="0" id="txtScore" readonly>
+		<label>Countdown: </label><input type="text" value="60" id="txttime" readonly>
+	</div>
+	</div>
+
+
+	<table id="tab">
+		<tr>
+			<td></td>
+			<td></td>
+			<td></td>
+			<td></td>
+			<td></td>
+			<td></td>
+			<td></td>
+			
+
+		</tr>
+		<tr>
+			<td></td>
+			<td></td>
+			<td></td>
+			<td></td>
+			<td></td>
+			<td></td>
+			<td></td>
+
+
+		</tr>
+		<tr>
+			<td></td>
+			<td></td>
+			<td></td>
+			<td></td>
+			<td></td>
+			<td></td>
+			<td></td>
+
+
+		</tr>
+		<tr>
+			<td></td>
+			<td></td>
+			<td></td>
+			<td></td>
+			<td></td>
+			<td></td>
+			<td></td>
+
+
+		</tr>
+	</table>
+
+	<script>
+	document.getElementById('data-box').style.display="none";
+	var player = document.getElementById('player');
+	var audio;
+	var txttime = document.getElementById('txttime');
+	var tab = document.getElementById('tab');
+	var txtscore = document.getElementById('txtScore');
+	var time = txttime.value;
+	var list = document.getElementsByTagName('td');
+	var cover = document.querySelector('.gamestart');
+	cover.style.display="none";
+	tab.style.display="none";
+	var score=0;
+	var au = document.createElement("audio");
+	au.preload="auto";
+	au.src = "img/wow.wav";
+	var au2 = document.createElement("audio");
+	au2.preload="auto";
+	au2.src = "img/clap.wav";
+	
+	
+	for(var i = 0; i < list.length; i++){
+		list[i].onmousedown=function(){
+			tab.style.cursor="url(img/tool2.png),auto";}
+		list[i].onmouseup=function(){
+			tab.style.cursor="url(img/tool.png),auto";
+			if(this.innerHTML!=""){
+				this.children[0].src="img/bingo.png";
+				voicePlay ();
+				score++;
+				txtScore.value=score;
+			}else 
+				score--;
+				txtScore.value=score;}
+	}
+	document.getElementById('easy').onclick=function(){
+		Start(1000,2000);
+		cover.style.display="none";
+	}
+	document.getElementById('hard').onclick=function(){
+		Start(300,1000);
+		cover.style.display="none";
+	}
+	function Start(ap,disap){
+		tab.style.display="";
+		var virus = setInterval(function(){
+		var random = parseInt(Math.random() * list.length);
+		list[random].innerHTML = '<img src="img/virus'+(Math.round(Math.random()*4)+1)+'.png">';
+		setTimeout(function(){
+				list[random].innerHTML = '';
+			},disap);//time of virus disappearance
+		},ap);//time of new virus appearance
+			
+		var id = setInterval(function(){
+			time--;
+			txttime.value = time;
+			if(time == 0){
+				voicePlay2();
+				clearInterval(id);
+				clearInterval(virus);
+				alert('Time out! Your Score is '+score+'!');
+				score = 0;
+				txtScore.value = score;
+				time = 60;
+				txttime.value = time;
+				cover.style.display="";
+				tab.style.display="none";
+			}
+		},1000);
+	}
+	function voicePlay () {
+		au.play();
+    }
+	function voicePlay2 () {
+		au2.play();
+    }
+	function myFunction(){
+		var username = document.getElementById('username');
+		player.value = username.value;
+		document.getElementById('data-box').style.display="";
+		document.getElementById('login').style.display="none";
+		document.getElementById('rule').style.display="none";
+		cover.style.display="";
+	}
+
+	</script>
+
+</body>
